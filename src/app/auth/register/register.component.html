@@ -1,0 +1,73 @@
+<section id="register">
+  <div class="bwm-form">
+    <div class="row">
+      <div class="col-md-5">
+        <h1>Register</h1>
+        <form #registerForm="ngForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input [(ngModel)]="formData.username"
+            	   #username="ngModel"
+             	   name="username"
+             	   type="text" 
+             	   class="form-control" 
+             	   id="username" 
+             	   required>
+             <div class="alert alert-danger" *ngIf="username.invalid && (username.dirty || username.touched)">
+                <div *ngIf="username.errors.required">
+    				Name is required.
+  				</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" 
+            	   class="form-control" 
+            	   id="email"
+            	   name="email"
+            	   [(ngModel)]="formData.email"
+            	   required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" 
+            	   class="form-control"
+            	   id="password"
+            	   name="password"
+            	   #password="ngModel"
+            	   [(ngModel)]="formData.password"
+            	   required>
+          </div>
+
+          <div class="form-group">
+            <label for="passwordConfirmation">Confirm Password</label>
+            <input type="password"
+            	   class="form-control" 
+            	   id="passwordConfirmation"
+            	   name="passwordConfirmation"
+            	   #passwordConfirmation="ngModel"
+            	   [(ngModel)]="formData.passwordConfirmation"
+            	   required>
+           	 <div class="alert alert-danger" *ngIf="passwordConfirmation.value && (passwordConfirmation.value != password.value)">
+              Confirmation password is not a same.
+            </div>
+          </div>
+          <button [disabled]="!registerForm.form.valid" (click)="register(registerForm)" type="button" class="btn btn-bwm">Submit</button>
+        </form>
+        <div *ngIf="errors.length > 0" class="alert alert-danger">
+          <p *ngFor="let error of errors">
+            {{error.detail}}
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 ml-auto">
+        <div class="image-container">
+          <h2 class="catchphrase">As our member you have access to most awesome places in the world.</h2>
+          <img src="assets/images/register-image.jpg" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
