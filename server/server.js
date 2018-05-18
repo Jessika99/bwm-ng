@@ -5,12 +5,13 @@ const FakeDb = require('./fake-db');
 const bodyParser = require('body-parser');
 
 const rentalRoutes = require('./routes/rentals'),
-	  userRoutes    = require("./routes/users");
+	  userRoutes    = require("./routes/users"),
+	  bookingRoutes    = require("./routes/bookings");
 
 // DB Conection
 mongoose.connect(config.DB_URI).then(() => {
 	const fakeDb = new FakeDb();
-	fakeDb.seedDb();
+	// fakeDb.seedDb();
 });
 
 // Express app creation
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 // Routing
 app.use('/api/v1/rentals', rentalRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/bookings', bookingRoutes);
 
 const PORT = process.env.PORT || 3001;
 

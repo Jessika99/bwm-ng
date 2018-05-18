@@ -9,21 +9,21 @@ router.get('/secret', UserCtrl.authMiddleware, function(req, res) {
 });
 
 router.get("", function(req, res) {
-	Rental.find({}, function(err, foundRentals) {
-		res.json(foundRentals);
-	});
+	Rental.find({}).select('-bookings').exec(function(err, allRentals) {
+      res.json(allRentals);
+    });
 });
 
-router.get('/:id', function(req, res) {
-	const rentalId = req.params.id;
-
-	Rental.findById(rentalId, function(err, foundRental) {
-		if (err) {
+router.get("/:id", function(req, res) {
+  Rental.findById(req.params.id).
+    populate('user', 'email -_id').
+    populate('bookings', 'startAt endAt -_id').
+    exec(function(err, foundRental) {
+    	if (err) {
 			return res.status(422).send({errors: [{title: 'Rental Error', detail: 'Could not find rental'}]});
-		}
-
-		return res.json(foundRental);
-	});
+	  }
+      res.json(foundRental);
+  });
 });
 
 module.exports = router;
