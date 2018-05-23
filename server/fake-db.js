@@ -1,52 +1,22 @@
 const Rental = require('./models/rental');
 const User = require('./models/user');
+const Booking = require('./models/booking');
+const fakeDbData = require('./data.json');
 
 class FakeDb {
 
 	constructor() {
-		this.rentals = [{
-		  title: "Nice view on ocean",
-		  city: "San Francisco",
-		  street: "Main street",
-		  category: "condo",
-		  image: "https://booksync-jerga-prod.s3.amazonaws.com/uploads/rental/image/5/image.jpeg",
-		  bedrooms: 4,
-		  shared: false,
-		  description: "Very nice apartment in center of the city.",
-		  dailyRate: 43
-		  },
-		  {
-		  title: "Modern apartment in center",
-		  city: "New York",
-		  street: "Time Square",
-		  category: "apartment",
-		  image: "https://booksync-jerga-prod.s3.amazonaws.com/uploads/rental/image/5/image.jpeg",
-		  bedrooms: 1,
-		  shared: true,
-		  description: "Very nice apartment in center of the city.",
-		  dailyRate: 11
-		  },
-		  {
-		  title: "Old house in nature",
-		  city: "Spisska Nova Ves",
-		  street: "Banicka 1",
-		  category: "house",
-		  image: "https://booksync-jerga-prod.s3.amazonaws.com/uploads/rental/image/5/image.jpeg",
-		  bedrooms: 5,
-		  shared: false,
-		  description: "Very nice apartment in center of the city.",
-		  dailyRate: 23
-		}];
+		// const dataObj = JSON.parse(fakeDbData);
+		// console.log(dataObj);
 
-	this.users = [{
-		username: "Test User",
-		email: "test@gmail.com",
-		password: "testtest"
-		}];
+		this.rentals = fakeDbData.rentals;
+
+		this.users = fakeDbData.users;
 	}
 
 	pushDataToDb() {
 		const user = new User(this.users[0]);
+		const user2 = new User(this.users[1]);
 
 		this.rentals.forEach((rental) => {
 			const newRental = new Rental(rental);
@@ -57,11 +27,13 @@ class FakeDb {
 		});
 
 		user.save();
+		user2.save();
 	}
 
 	async cleanDb() {
 		await User.remove({});
 		await Rental.remove({});
+		await Booking.remove({});
 	}
 
 	async seedDb() {
