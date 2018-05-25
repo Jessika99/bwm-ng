@@ -20,6 +20,8 @@ import { LowercasePipe } from '../shared/pipes/lowercase.pipe';
 
 import { AuthGuard } from '../auth/shared/auth.guard';
 import { RentalDetailBookingComponent } from './rental-detail/rental-detail-booking/rental-detail-booking.component';
+import { RentalSearchComponent } from './rental-search/rental-search.component';
+import { RentalCreateComponent } from './rental-create/rental-create.component';
 
 const routes: Routes = [
   {
@@ -27,7 +29,9 @@ const routes: Routes = [
     component: RentalComponent,
     children: [
     { path: '', component: RentalListComponent },
-    { path: ':rentalId', component: RentalDetailComponent, canActivate: [AuthGuard] }
+    { path: 'new', component: RentalCreateComponent, canActivate: [AuthGuard] },
+    { path: ':rentalId', component: RentalDetailComponent },
+    { path: ':city/homes', component: RentalSearchComponent}
   ]}
 ]
 
@@ -38,7 +42,9 @@ const routes: Routes = [
     RentalListDetailComponent,
     RentalDetailComponent,
     LowercasePipe,
-    RentalDetailBookingComponent
+    RentalDetailBookingComponent,
+    RentalSearchComponent,
+    RentalCreateComponent
   ],
   imports: [
   	CommonModule,
