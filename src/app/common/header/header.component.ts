@@ -11,11 +11,15 @@ export class HeaderComponent {
   title = 'app';
 
   constructor(public auth: AuthService,
-  			  public router: Router) {
+  			      public router: Router) {
   }
 
   logout() {
   	this.auth.logout();
   	this.router.navigate(['login']);
+  }
+
+  public search(city: string): void {
+    city ? this.router.navigate([`rentals/${city}/homes`]) : this.router.navigate(['rentals'])
   }
 }
