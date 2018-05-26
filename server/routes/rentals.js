@@ -3,6 +3,7 @@ const router = express.Router();
 const Rental = require('../models/rental');
 const User = require('../models/user');
 const { normalizeErrors } = require("../helpers/mongoose");
+const moment = require('moment');
 
 const UserCtrl = require('../controllers/user');
 
@@ -19,6 +20,35 @@ router.get("/:id", function(req, res) {
       return res.status(422).send({errors: [{title: 'Rental Error', detail: 'Could not find rental'}]});
     }
       res.json(foundRental);
+  });
+});
+
+router.delete("/:id", UserCtrl.authMiddleware, function(req, res) {
+  const user =  res.locals.user;
+
+  Rental.findById(req.params.id)
+    .populate('user', '_id')
+    .populate({
+      path: 'bookings',
+      select: 'startAt',
+      match: { startAt: {$gt: new Date()}}
+    })
+    .exec(function(err, rental) {
+      if (err) { return res.status(422).send({errors: normalizeErrors(err.errors) });}
+
+      if (user.id !== rental.user.id) {
+        return res.status(422).send({errors: [{title: 'Invalid User', detail: "You are not rental owener!!!!"}] });
+      }
+      
+      if (rental.bookings.length > 0) {
+        return res.status(422).send({errors: [{title: 'Has Active Bookings', detail: "Cannot delete rental with active bookings. Please contact support for more info"}] });
+      }
+
+      rental.remove(function(err) {
+        if (err) { return res.status(422).send({errors: normalizeErrors(err.errors) });}
+
+        return res.json({"ok": true})
+      })
   });
 });
 

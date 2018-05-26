@@ -65,7 +65,7 @@ export class RentalDetailBookingComponent implements OnInit {
   }
 
   private checkForInvalidDates(date) {
-    return this.bookedOutDates.includes(this.helper.formatBookingDate(date)) || date.diff(moment(), 'days') < 0;
+    return this.bookedOutDates.includes(this.helper.formatBookingDate(date));
   }
 
   private addNewBookedOutDates(bookingData) {
