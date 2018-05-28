@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { DaterangepickerConfig } from 'ng2-daterangePicker';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +6,6 @@ import { DaterangepickerConfig } from 'ng2-daterangePicker';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
 
   constructor() {}
 }
