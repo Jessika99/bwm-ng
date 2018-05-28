@@ -11,6 +11,18 @@ router.get('/secret', UserCtrl.authMiddleware, function(req, res) {
 	res.json({"test": true});
 });
 
+router.get("/manage", UserCtrl.authMiddleware, function(req, res) {
+  const user = res.locals.user;
+
+  Rental.where({user: user}).populate('bookings').exec(function(err, foundRentals){
+    if (err) {
+      return res.status(422).send({errors: normalizeErrors(err.errors) });
+    }
+
+    res.json(foundRentals);
+  });
+});
+
 router.get("/:id", function(req, res) {
   Rental.findById(req.params.id).
     populate('user', 'email -_id').
