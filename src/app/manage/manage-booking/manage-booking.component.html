@@ -1,0 +1,9 @@
+<p>
+  manage-booking works!
+</p>
+
+<p *ngFor="let booking of bookings">
+	{{booking.startAt}}
+	{{booking.endAt}}
+	{{booking?.rental?.title}}
+</p>
